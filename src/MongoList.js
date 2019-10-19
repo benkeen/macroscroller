@@ -30,48 +30,75 @@ export default class MongoList extends React.Component {
 		};
 	}
 
-	componentDidMount () {
-	}
-
 	onJump () {
 		const { virtualHeight, scrollableHeight, jumpinessCoefficient, pageHeight } = this.state;
 		const { height } = this.props;
-
 		const scrollTop = this.el.current.scrollTop;
+
+		console.log('scroll top: ', scrollTop);
+
 		const page = Math.floor(scrollTop * ((virtualHeight - height) / (scrollableHeight - height)) * (1 / pageHeight));
 
-		console.log('page : ', page);
-
-		this.setState(() => ({
+		const newState = {
 			page,
 			offset: Math.round(page * jumpinessCoefficient),
 			prevScrollTop: scrollTop
-		}));
+		};
+		this.setState(() => (newState));
 
 		//removeAllRows();
+
+		return newState;
 	}
 
+	componentDidUpdate () {
+		console.log(this.props.height, this.state.scrollableHeight);
+	}
 	onScroll () {
 		const { prevScrollTop } = this.state;
-		const { height, onDebug } = this.props;
+		const { height } = this.props;
 
 		if (!this.el.current) {
 			return;
 		}
 
 		const scrollTop = this.el.current.scrollTop;
-
-		console.log(scrollTop);
-
+		let newState = {};
 		if (Math.abs(scrollTop - prevScrollTop) > height) {
-			this.onJump();
+			newState = this.onJump();
 		} else {
-		// 	onNearScroll();
+			newState = this.onNearScroll();
 		}
 
-		onDebug({
+		this.props.onDebug({ ...this.state, newState });
+	}
 
-		});
+	onNearScroll () {
+		const { page, offset, pageHeight, jumpinessCoefficient } = this.state;
+		const scrollTop = this.el.current.scrollTop;
+
+		const newState = {};
+		if (scrollTop + offset > (page + 1) * pageHeight) {
+			newState.page = page+1;
+			newState.offset = Math.round(page * jumpinessCoefficient);
+			newState.prevScrollTop = scrollTop - jumpinessCoefficient;
+			this.el.current.scrollTop = newState.prevScrollTop;
+
+			//removeAllRows();
+		} else if (scrollTop + offset < page * pageHeight) {
+			newState.page = page-1;
+			newState.offset = Math.round(page * jumpinessCoefficient);
+			newState.prevScrollTop = scrollTop + jumpinessCoefficient;
+			this.el.current.scrollTop = newState.prevScrollTop;
+
+			//removeAllRows();
+		} else {
+			newState.prevScrollTop = scrollTop;
+		}
+
+		this.setState(() => (newState));
+
+		return newState;
 	}
 
 	getRows () {
@@ -87,7 +114,7 @@ export default class MongoList extends React.Component {
 		// bottom = Math.min(th/rh,bottom);
 
 		return data.map((item) => (
-			<div key={item} style={{ height: 40 }}>
+			<div key={item} style={{ height: 50 }}>
 				{item}
 			</div>
 		));
@@ -102,16 +129,20 @@ export default class MongoList extends React.Component {
 				width: 300,
 				float: 'left',
 				border: '1px solid black',
-				overflow: 'auto',
-				scroll: 'auto'
+				overflow: 'auto'
 			}} ref={this.el}
 			onScroll={this.onScroll}>
-				{this.getRows()}
+				<div style={{
+					height: this.state.scrollableHeight,
+					position: 'relative',
+					overflow: 'hidden'
+				}}>
+					{this.getRows()}
+				</div>
 			</div>
 		);
 	}
 }
-
 
 
 /*

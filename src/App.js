@@ -10,30 +10,29 @@ for (let i=0; i<2000; i++) {
 
 
 const Debug = (props) => {
-	if (props) {
+	if (props === null) {
 		return null;
 	}
-	const { numPages, pageHeight, jumpinessCoefficient, page } = props;
+	const { numPages, pageHeight, jumpinessCoefficient, offset, prevScrollTop, page } = props;
 
 	return (
-		<ul style={{ float: 'left', border: '1px solid blue', padding: 10, marginLeft: 20 }}>
+		<ul style={{
+			float: 'left',
+			textAlign: 'left',
+			border: '1px solid blue',
+			padding: 10,
+			marginLeft: 20
+		}}>
 			<li><label>numPages:</label> {numPages}</li>
 			<li><label>pageHeight:</label> {pageHeight}</li>
 			<li><label>jumpinessCoefficient:</label> {jumpinessCoefficient}</li>
 			<li><label>page:</label> {page}</li>
-			<li><label>numPages:</label> {numPages}</li>
-			<li><label>numPages:</label> {numPages}</li>
-			<li><label>numPages:</label> {numPages}</li>
-			<li><label>numPages:</label> {numPages}</li>
+			<li><label>offset:</label> {offset}</li>
+			<li><label>virtual y:</label> {prevScrollTop + offset}</li>
+			<li><label>real y:</label> {prevScrollTop}</li>
 		</ul>
 	);
 };
-
-// dbg.append("page = " + page + "<br>");
-// dbg.append("offset = " + offset + "<br>");
-// dbg.append("virtual y = " + (prevScrollTop + offset) + "<br>");
-// dbg.append("real y = " + prevScrollTop + "<br>");
-// dbg.append("rows in the DOM = " + $(".row").length + "<br>");
 
 
 const App = () => {
@@ -41,7 +40,7 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<h1>MongoList</h1>
+			<h1>JumboList</h1>
 
 			<MongoList
 				height={400}
