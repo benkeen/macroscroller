@@ -4,7 +4,7 @@ import './App.css';
 
 
 const data = [];
-for (let i=0; i<2000; i++) {
+for (let i=0; i<10000; i++) {
 	data.push(i);
 }
 
@@ -40,7 +40,7 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<h1>JumboList</h1>
+			<h1>Massive List rendering</h1>
 
 			<MongoList
 				height={400}
