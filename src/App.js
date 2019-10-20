@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MongoList from './MongoList';
+import MonsterList from './MonsterList';
 import './App.css';
 
 
@@ -43,9 +43,11 @@ const App = () => {
 		<div className="App">
 			<h1>Massive List rendering</h1>
 
-			<MongoList
+			<MonsterList
 				height={400}
+				rowHeight={50}
 				data={data}
+				total
 				onDebug={setDebugProps}
 			/>
 			<Debug {...debugProps} />
