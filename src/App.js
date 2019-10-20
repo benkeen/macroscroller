@@ -3,8 +3,9 @@ import MongoList from './MongoList';
 import './App.css';
 
 
+// this'll be loaded piecemeal and pass in as an pagination object for a quick hash lookup
 const data = [];
-for (let i=0; i<10000; i++) {
+for (let i=0; i<100000; i++) {
 	data.push(i);
 }
 
