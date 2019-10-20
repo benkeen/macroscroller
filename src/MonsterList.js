@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BROWSER_LIMIT_DOM_EL_HEIGHT_HARD_MAX = 10000000;
+const BROWSER_LIMIT_DOM_EL_HEIGHT_HARD_MAX = 1000000;
 
 
 export default class MonsterList extends React.Component {
