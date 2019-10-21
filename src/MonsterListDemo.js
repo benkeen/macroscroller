@@ -4,6 +4,7 @@ const BROWSER_LIMIT_DOM_EL_HEIGHT_HARD_MAX = 1000000;
 
 
 export default class MonsterList extends React.Component {
+
 	constructor (props) {
 		super(props);
 		this.onScroll = this.onScroll.bind(this);
@@ -18,7 +19,7 @@ export default class MonsterList extends React.Component {
 		const numPages =  Math.ceil(virtualHeight / pageHeight);
 
 		this.state = {
-			loading: false, // this component manages its own loading state
+			mounted: false,
 			virtualHeight,
 			scrollableHeight: realScrollableHeight,
 			pageHeight,
@@ -33,8 +34,8 @@ export default class MonsterList extends React.Component {
 	}
 
 	componentDidMount () {
-		if (this.props.totalResults === null) {
-			this.props.onRequestLoad([0]);
+		if (!this.state.mounted) {
+			this.setState(() => ({ mounted: true }));
 		}
 	}
 
@@ -87,59 +88,30 @@ export default class MonsterList extends React.Component {
 
 	getRows () {
 		const { virtualHeight } = this.state;
-		const { height, data, rowHeight, batchSize, totalResults, components, onRequestLoad } = this.props;
-		const { row: Row, loading: Loading } = components;
+		const { height, rowHeight } = this.props;
 
 		if (!this.el.current) {
 			return null;
 		}
 
-//		console.log(totalResults);
-
 		let y = this.el.current.scrollTop + this.offset,
 			buffer = height,
-			firstRow = Math.floor((y - buffer) / rowHeight),
-			lastRow = Math.ceil((y + height + buffer) / rowHeight);
+			top = Math.floor((y - buffer) / rowHeight),
+			bottom = Math.ceil((y + height + buffer) / rowHeight);
 
-		firstRow = Math.max(0, firstRow);
-		lastRow = Math.min(virtualHeight / rowHeight, lastRow);
-
-		// figure out which page(s) are currently visible
-		const startPage = Math.floor(firstRow / batchSize);
-		const endPage = Math.ceil(lastRow / batchSize);
-
-		const pageDataNeeded = [];
-		if (!data[`page${startPage}`]) {
-			pageDataNeeded.push(startPage);
-		}
-		if (!data[`page${endPage}`]) {
-			pageDataNeeded.push(endPage);
-		}
-
-		if (pageDataNeeded.length) {
-			onRequestLoad(pageDataNeeded);
-			return <Loading />;
-		}
-
-
-		console.log(firstRow, lastRow);
+		top = Math.max(0, top);
+		bottom = Math.min(virtualHeight / rowHeight, bottom);
 
 		let rows = [];
-		for (let i=firstRow; i<=lastRow; i++) {
-
-			// this is obviously no good
-			const currPage = Math.floor(i / batchSize);
-			const currIndex = i % batchSize;
-			let currData = data[`page${currPage}`][currIndex];
-
-			console.log(currData);
-
+		for (let i=top; i<=bottom; i++) {
 			rows.push(
-				<Row data={currData} key={i} styles={{
+				<div key={i} style={{
 					height: rowHeight,
 					position: 'absolute',
 					top: i * rowHeight - this.offset
-				}} />
+				}}>
+					{i+1}
+				</div>
 			);
 		}
 		return rows;
@@ -157,8 +129,8 @@ export default class MonsterList extends React.Component {
 				border: '1px solid black',
 				overflow: 'auto'
 			}}
-			     ref={this.el}
-			     onScroll={this.onScroll}>
+		    ref={this.el}
+			onScroll={this.onScroll}>
 				<div style={{
 					height: scrollableHeight,
 					position: 'relative',
@@ -173,6 +145,5 @@ export default class MonsterList extends React.Component {
 }
 
 MonsterList.defaultProps = {
-	data: {},
-	batchSize: 200
+	onDebug: () => {}
 };

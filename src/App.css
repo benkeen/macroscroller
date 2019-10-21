@@ -6,6 +6,7 @@
 
 .navLink {
     color: #1199cc;
+    cursor: pointer;
 }
 
 .navLink:hover {

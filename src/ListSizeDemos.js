@@ -1,5 +1,5 @@
 import React from 'react';
-import MonsterList from './MonsterList';
+import MonsterList from './MonsterListDemo';
 
 let data = [];
 
