@@ -45,6 +45,45 @@ const App = () => {
 
 			<div style={{ display: 'flex', flexDirection: 'row' }}>
 				<div style={{ flex: 1, paddingRight: 10 }}>
+					<h3>100</h3>
+					<MonsterList
+						height={400}
+						rowHeight={50}
+						data={data}
+						totalResults={100}
+					/>
+					<p>(No jumping)</p>
+				</div>
+				<div style={{ flex: 1, paddingRight: 10 }}>
+					<h3>1,000</h3>
+					<MonsterList
+						height={400}
+						rowHeight={50}
+						data={data}
+						totalResults={1000}
+					/>
+					<p>(No jumping)</p>
+				</div>
+				<div style={{ flex: 1, paddingRight: 10 }}>
+					<h3>100,000</h3>
+					<MonsterList
+						height={400}
+						rowHeight={50}
+						data={data}
+						totalResults={100000}
+					/>
+					<p>(jumping)</p>
+				</div>
+				<div style={{ flex: 1, paddingRight: 10 }}>
+					<h3>1,000,000</h3>
+					<MonsterList
+						height={400}
+						rowHeight={50}
+						data={data}
+						totalResults={1000000}
+					/>
+				</div>
+				<div style={{ flex: 1, paddingRight: 10 }}>
 					<h3>20,000,000</h3>
 					<MonsterList
 						height={400}

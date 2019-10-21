@@ -16,12 +16,9 @@ export default class MonsterList extends React.Component {
 
 		// virtual height is the desired total height, which may be greater than what browsers can handle
 		const virtualHeight = props.rowHeight * props.totalResults;
-		console.log(virtualHeight); // 1000000000
 
 		// FIXED MAX, but could be lower base on the data set size
 		const realScrollableHeight = Math.min(virtualHeight, BROWSER_LIMIT_DOM_EL_HEIGHT_HARD_MAX);
-		console.log(realScrollableHeight);
-
 
 		const pageHeight = realScrollableHeight / 100;
 		const numPages =  Math.ceil(virtualHeight / pageHeight);
@@ -105,12 +102,9 @@ export default class MonsterList extends React.Component {
 		const { virtualHeight } = this.state;
 		const { height, rowHeight } = this.props;
 
-		console.log('?');
-
 		if (!this.el.current) {
 			return null;
 		}
-		console.log('..');
 
 		let y = this.el.current.scrollTop + this.offset2,
 			buffer = height,
@@ -119,8 +113,6 @@ export default class MonsterList extends React.Component {
 
 		top = Math.max(0, top);
 		bottom = Math.min(virtualHeight / rowHeight, bottom);
-
-		console.log(top, bottom);
 
 		let rows = [];
 		for (let i=top; i<=bottom; i++) {
