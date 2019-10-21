@@ -12,12 +12,7 @@ export default class MonsterList extends React.Component {
 
 		this.el = React.createRef();
 
-		//const virtualHeight = 1000000000; //
-
-		// virtual height is the desired total height, which may be greater than what browsers can handle
 		const virtualHeight = props.rowHeight * props.totalResults;
-
-		// FIXED MAX, but could be lower base on the data set size
 		const realScrollableHeight = Math.min(virtualHeight, BROWSER_LIMIT_DOM_EL_HEIGHT_HARD_MAX);
 
 		const pageHeight = realScrollableHeight / 100;
@@ -42,7 +37,6 @@ export default class MonsterList extends React.Component {
 		if (!this.state.mounted) {
 			this.setState(() => ({ mounted: true }));
 		}
-		// this.props.onDebug({ ...this.state });
 	}
 
 	onScroll () {
@@ -53,15 +47,12 @@ export default class MonsterList extends React.Component {
 		}
 
 		const scrollTop = this.el.current.scrollTop;
-		let debugState = {};
 
 		if (Math.abs(scrollTop - this.prevScrollTop) > height) {
-			debugState = this.onJump();
+			this.onJump();
 		} else {
-			debugState = this.onNearScroll();
+			this.onNearScroll();
 		}
-		// this.props.onDebug({ ...this.state, debugState });
-
 
 		// just for repainting
 		this.setState(() => ({ trackedState: scrollTop }));

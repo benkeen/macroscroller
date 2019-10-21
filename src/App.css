@@ -3,3 +3,11 @@
     font-size: 12px;
     font-family: verdana;
 }
+
+.navLink {
+    color: #1199cc;
+}
+
+.navLink:hover {
+    border-bottom: 1px solid #1199cc;
+}
